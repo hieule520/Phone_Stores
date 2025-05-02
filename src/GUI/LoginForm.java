@@ -3,11 +3,15 @@ package GUI;
 import BLL.UserBLL;
 
 import javax.swing.*;
+<<<<<<< HEAD
 import java.awt.*;
+=======
+>>>>>>> parent of 81bb9a3 (uppp)
 
 public class LoginForm extends JFrame {
     private JTextField txtUser;
     private JPasswordField txtPass;
+<<<<<<< HEAD
     private final UserBLL bll = new UserBLL();
 
 
@@ -83,6 +87,39 @@ public class LoginForm extends JFrame {
         panel.add(btnSignUp);
 
         // Sự kiện nút đăng nhập
+=======
+    private UserBLL bll = new UserBLL();
+
+    public LoginForm() {
+        setTitle("Đăng nhập");
+        setSize(300, 250);
+        setLayout(null);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+        JLabel lbTitle = new JLabel("ĐĂNG NHẬP");
+        lbTitle.setBounds(90, 10, 150, 30);
+        add(lbTitle);
+
+        txtUser = new JTextField();
+        txtUser.setBounds(100, 60, 120, 20);
+        add(new JLabel("Username:")).setBounds(20, 60, 80, 20);
+        add(txtUser);
+
+        txtPass = new JPasswordField();
+        txtPass.setBounds(100, 100, 120, 20);
+        add(new JLabel("Password:")).setBounds(20, 100, 80, 20);
+        add(txtPass);
+
+        JButton btnLogin = new JButton("Đăng nhập");
+        btnLogin.setBounds(80, 140, 120, 30);
+        add(btnLogin);
+
+        JButton btnToRegister = new JButton("Đăng ký");
+        btnToRegister.setBounds(80, 180, 120, 25);
+        add(btnToRegister);
+
+>>>>>>> parent of 81bb9a3 (uppp)
         btnLogin.addActionListener(e -> {
             String user = txtUser.getText().trim();
             String pass = new String(txtPass.getPassword());
@@ -95,8 +132,12 @@ public class LoginForm extends JFrame {
             }
         });
 
+<<<<<<< HEAD
         // Sự kiện nút đăng ký
         btnSignUp.addActionListener(e -> {
+=======
+        btnToRegister.addActionListener(e -> {
+>>>>>>> parent of 81bb9a3 (uppp)
             dispose();
             new RegisterForm().setVisible(true);
         });

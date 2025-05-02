@@ -12,7 +12,11 @@ public class UserBLL {
 
     public String validateRegister(String username, String password) {
         if (username.contains(" ")) return "Username không được chứa khoảng trắng";
+<<<<<<< HEAD
         if (password.length() < 8) return "Password phải ít nhất 8 ký tự";
+=======
+        if (password.length() < 6) return "Password phải ít nhất 6 ký tự";
+>>>>>>> parent of 81bb9a3 (uppp)
         if (dal.usernameExists(username)) return "Username đã tồn tại";
         boolean success = dal.register(new User(username, password));
         return success ? "OK" : "Đăng ký thất bại";
