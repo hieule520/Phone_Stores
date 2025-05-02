@@ -1,75 +1,104 @@
 package GUI;
 
-import BLL.EmployeeBLL;
-import DTO.EmployeeDTO;
+import BLL.UserBLL;
 
 import javax.swing.*;
-import java.awt.event.*;
+import java.awt.*;
 
 public class LoginForm extends JFrame {
-    private JTextField usernameField;
-    private JPasswordField passwordField;
-    private JButton loginButton, registerButton;
+    private JTextField txtUser;
+    private JPasswordField txtPass;
+    private final UserBLL bll = new UserBLL();
+
+
 
     public LoginForm() {
-        setTitle("Đăng nhập");
-        setSize(300, 230);
+        setTitle("Đăng nhập - New Era");
+        setSize(1043, 550);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setResizable(false);
         setLocationRelativeTo(null);
         setLayout(null);
+        getContentPane().setBackground(new Color(29, 29, 29)); // #1D1D1D
 
-        JLabel userLabel = new JLabel("Username:");
-        userLabel.setBounds(30, 30, 80, 25);
-        add(userLabel);
+        // Ảnh bên trái
+        ImageIcon img1 = new ImageIcon("src/img/NewEra-icon.png");
+        Image img11 = img1.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
+        JLabel img12 = new JLabel(new ImageIcon(img11));
+        img12.setBounds(14, 33, 482, 509);
+        add(img12);
+        // Panel đăng nhập bên phải
+        JPanel panel = new JPanel();
+        panel.setLayout(null);
+        panel.setBackground(new Color(18, 18, 18)); // #121212
+        panel.setBounds(496, -13, 532, 885);
+        add(panel);
 
-        usernameField = new JTextField();
-        usernameField.setBounds(120, 30, 130, 25);
-        add(usernameField);
+        // Logo
+        ImageIcon logoIcon = new ImageIcon("src/img/newera-logo.png");
+        Image logoImg = logoIcon.getImage().getScaledInstance(100, 70, Image.SCALE_SMOOTH);
+        JLabel logo = new JLabel(new ImageIcon(logoImg));
+        logo.setBounds(219, 54, 94, 50);
+        panel.add(logo);
 
-        JLabel passLabel = new JLabel("Password:");
-        passLabel.setBounds(30, 70, 80, 25);
-        add(passLabel);
+        // Tiêu đề
+        JLabel lblTitle = new JLabel("Log in to New Era");
+        lblTitle.setForeground(Color.WHITE);
+        lblTitle.setFont(new Font("SansSerif", Font.BOLD, 18));
+        lblTitle.setBounds(182, 115, 200, 27);
+        panel.add(lblTitle);
 
-        passwordField = new JPasswordField();
-        passwordField.setBounds(120, 70, 130, 25);
-        add(passwordField);
+        // Trường username
+        txtUser = new JTextField();
+        txtUser.setBounds(125, 189, 282, 31);
+        txtUser.setToolTipText("Email or username");
+        panel.add(txtUser);
 
-        loginButton = new JButton("Login");
-        loginButton.setBounds(30, 120, 100, 30);
-        add(loginButton);
+        // Trường password
+        txtPass = new JPasswordField();
+        txtPass.setBounds(124, 256, 282, 31);
+        txtPass.setToolTipText("Password");
+        panel.add(txtPass);
 
-        registerButton = new JButton("Register");
-        registerButton.setBounds(150, 120, 100, 30);
-        add(registerButton);
+        // Nút đăng nhập
+        JButton btnLogin = new JButton("Login");
+        btnLogin.setFont(new Font("SansSerif", Font.BOLD, 13));
+        btnLogin.setBounds(125, 332, 282, 27);
+        btnLogin.setBackground(new Color(30, 215, 96));
+        panel.add(btnLogin);
 
-        loginButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    EmployeeBLL bll = new EmployeeBLL();
-                    EmployeeDTO emp = bll.login(usernameField.getText(), new String(passwordField.getPassword()));
-                    if (emp != null) {
-                        JOptionPane.showMessageDialog(null, "Xin chào " + emp.getFullName() + " (" + emp.getRole() + ")");
-                        dispose();
-                        new HomeForm().setVisible(true);
-                        // Mở HomeForm tùy theo quyền nếu cần
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Sai tài khoản hoặc mật khẩu");
-                    }
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    JOptionPane.showMessageDialog(null, "Lỗi kết nối cơ sở dữ liệu");
-                }
-            }
-        });
+        // Nhãn “chưa có tài khoản”
+        JLabel lblNoAccount = new JLabel("Don't have an account?");
+        lblNoAccount.setForeground(new Color(188, 186, 186));
+        lblNoAccount.setBounds(180, 387, 150, 20);
+        panel.add(lblNoAccount);
 
-        registerButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                new RegisterForm();
+        // Nút đăng ký
+        JButton btnSignUp = new JButton("Sign up");
+        btnSignUp.setBorderPainted(false);
+        btnSignUp.setOpaque(false);
+        btnSignUp.setContentAreaFilled(false);
+        btnSignUp.setForeground(Color.CYAN.darker());
+        btnSignUp.setBounds(304, 384, 80, 25);
+        panel.add(btnSignUp);
+
+        // Sự kiện nút đăng nhập
+        btnLogin.addActionListener(e -> {
+            String user = txtUser.getText().trim();
+            String pass = new String(txtPass.getPassword());
+            if (bll.validateLogin(user, pass)) {
+                JOptionPane.showMessageDialog(this, "Đăng nhập thành công!");
                 dispose();
+                new HomeForm(user).setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(this, "Sai tài khoản hoặc mật khẩu");
             }
         });
 
-        setVisible(true);
+        // Sự kiện nút đăng ký
+        btnSignUp.addActionListener(e -> {
+            dispose();
+            new RegisterForm().setVisible(true);
+        });
     }
-
 }

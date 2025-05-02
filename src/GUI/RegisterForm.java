@@ -1,111 +1,98 @@
 package GUI;
 
-import BLL.EmployeeBLL;
-import DTO.EmployeeDTO;
+import BLL.UserBLL;
 
 import javax.swing.*;
-import java.awt.event.*;
+import java.awt.*;
 
 public class RegisterForm extends JFrame {
-    private JTextField usernameField, fullNameField, phoneField;
+    private JTextField firstnameField;
+    private JTextField lastnameField;
+    private JTextField emailField;
+    private JTextField usernameField;
+    private JTextField phonenumberField;
+    private JTextField addressField;
     private JPasswordField passwordField;
-    private JButton registerButton, backButton;
+    private UserBLL bll = new UserBLL();
 
     public RegisterForm() {
-        setTitle("Đăng ký nhân viên");
-        setSize(350, 350);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setTitle("Đăng ký");
+        setSize(900, 600);
         setLocationRelativeTo(null);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setResizable(false);
         setLayout(null);
+        getContentPane().setBackground(new Color(18, 18, 18));
 
-        JLabel userLabel = new JLabel("Username:");
-        userLabel.setBounds(30, 30, 80, 25);
-        add(userLabel);
+        JLabel titleLabel = new JLabel("Sign up to start shopping");
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 28));
+        titleLabel.setForeground(Color.WHITE);
+        titleLabel.setBounds(135, 32, 500, 40);
+        add(titleLabel);
 
-        usernameField = new JTextField();
-        usernameField.setBounds(120, 30, 180, 25);
-        add(usernameField);
+        // Logo placeholder
+        JLabel logo = new JLabel();
+        logo.setBounds(57, 28, 74, 73);
+        logo.setIcon(new ImageIcon("src/images/logo.png")); // Adjust path as needed
+        add(logo);
 
-        JLabel passLabel = new JLabel("Password:");
-        passLabel.setBounds(30, 70, 80, 25);
-        add(passLabel);
+        firstnameField = createTextField("First Name", 63, 153);
+        lastnameField = createTextField("Last Name", 512, 153);
+        emailField = createTextField("Email", 63, 227);
+        addressField = createTextField("Address", 512, 227);
+        usernameField = createTextField("Username", 63, 301);
+        phonenumberField = createTextField("Phone Number", 512, 301);
 
         passwordField = new JPasswordField();
-        passwordField.setBounds(120, 70, 180, 25);
+        passwordField.setBounds(63, 375, 265, 25);
+        passwordField.setToolTipText("Password");
         add(passwordField);
 
-        JLabel nameLabel = new JLabel("Full Name:");
-        nameLabel.setBounds(30, 110, 80, 25);
-        add(nameLabel);
+        JButton confirmButton = new JButton("Confirm");
+        confirmButton.setBounds(657, 449, 120, 30);
+        confirmButton.setBackground(Color.decode("#3BE477"));
+        confirmButton.setForeground(Color.BLACK);
+        confirmButton.setFont(new Font("Arial", Font.BOLD, 12));
+        add(confirmButton);
 
-        fullNameField = new JTextField();
-        fullNameField.setBounds(120, 110, 180, 25);
-        add(fullNameField);
+        JLabel loginLabel = new JLabel("Already have an account?");
+        loginLabel.setForeground(Color.LIGHT_GRAY);
+        loginLabel.setBounds(325, 515, 200, 20);
+        add(loginLabel);
 
-        JLabel phoneLabel = new JLabel("Phone:");
-        phoneLabel.setBounds(30, 150, 80, 25);
-        add(phoneLabel);
+        JButton loginLink = new JButton("Log in here");
+        loginLink.setBorderPainted(false);
+        loginLink.setContentAreaFilled(false);
+        loginLink.setForeground(Color.CYAN);
+        loginLink.setBounds(480, 512, 100, 25);
+        loginLink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        add(loginLink);
 
-        phoneField = new JTextField();
-        phoneField.setBounds(120, 150, 180, 25);
-        add(phoneField);
-
-        registerButton = new JButton("Register");
-        registerButton.setBounds(60, 210, 100, 30);
-        add(registerButton);
-
-        backButton = new JButton("Back");
-        backButton.setBounds(180, 210, 100, 30);
-        add(backButton);
-
-        registerButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    String username = usernameField.getText().trim();
-                    String password = new String(passwordField.getPassword());
-
-                    if (username.contains(" ")) {
-                        JOptionPane.showMessageDialog(null, "Username không được chứa khoảng trắng!");
-                        return;
-                    }
-
-                    if (password.length() < 6) {
-                        JOptionPane.showMessageDialog(null, "Password phải có ít nhất 6 ký tự!");
-                        return;
-                    }
-
-                    EmployeeBLL bll = new EmployeeBLL();
-                    if (bll.isUsernameExist(username)) {
-                        JOptionPane.showMessageDialog(null, "Username đã tồn tại!");
-                        return;
-                    }
-
-                    EmployeeDTO emp = new EmployeeDTO();
-                    emp.setUsername(username);
-                    emp.setPassword(password);
-                    emp.setFullName(fullNameField.getText());
-                    emp.setPhone(phoneField.getText());
-                    emp.setRole("staff");
-                    bll.register(emp);
-
-                    JOptionPane.showMessageDialog(null, "Đăng ký thành công!");
-                    new LoginForm();
-                    dispose();
-
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    JOptionPane.showMessageDialog(null, "Lỗi đăng ký");
-                }
-            }
-        });
-
-        backButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                new LoginForm();
+        confirmButton.addActionListener(e -> {
+            String result = bll.validateRegister(
+                usernameField.getText().trim(),
+                new String(passwordField.getPassword())
+            );
+            if (result.equals("OK")) {
+                JOptionPane.showMessageDialog(this, "Đăng ký thành công!");
                 dispose();
+                new LoginForm().setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(this, result);
             }
         });
 
-        setVisible(true);
+        loginLink.addActionListener(e -> {
+            dispose();
+            new LoginForm().setVisible(true);
+        });
+    }
+
+    private JTextField createTextField(String placeholder, int x, int y) {
+        JTextField field = new JTextField();
+        field.setBounds(x, y, 265, 26);
+        field.setToolTipText(placeholder);
+        add(field);
+        return field;
     }
 }
