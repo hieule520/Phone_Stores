@@ -68,25 +68,12 @@ public class ProductsDAL {
         return false;
     }
     
-
-    // public boolean isProductIDExists(int productID) {
-    //     String sql = "SELECT ProductID FROM products WHERE ProductID = ?";
-    //     try (PreparedStatement ps = con.prepareStatement(sql)) {
-    //         ps.setInt(1, productID);
-    //         ResultSet rs = ps.executeQuery();
-    //         return rs.next(); // Trả về true nếu tìm thấy tên sản phẩm
-    //     } catch (SQLException e) {
-    //         e.printStackTrace();
-    //     }
-    //     return false;
-    // }
-    
     public boolean isProductNameExists(String productName) {
         String sql = "SELECT ProductName FROM products WHERE ProductName = ?";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, productName);
             ResultSet rs = ps.executeQuery();
-            return rs.next(); // Trả về true nếu tìm thấy tên sản phẩm
+            return rs.next(); 
         } catch (SQLException e) {
             e.printStackTrace();
         }

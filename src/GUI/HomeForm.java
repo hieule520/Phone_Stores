@@ -28,22 +28,22 @@ public class HomeForm extends JFrame {
 
         menuPanel.setBorder(BorderFactory.createLineBorder(Color.black));
         JButton storeBtn = new JButton("Cửa hàng");
-        storeBtn.setBounds(10, 150, 120, 50);
+        storeBtn.setBounds(1, 130, 148, 50);
         storeBtn.setFocusable(false);
         storeBtn.setBackground(new Color(84, 106, 117));
         storeBtn.setForeground(Color.white);
         JButton warehouseBtn = new JButton("Kho");
-        warehouseBtn.setBounds(10, 250, 120, 50);
+        warehouseBtn.setBounds(1, 230, 148, 50);
         warehouseBtn.setFocusable(false);
         warehouseBtn.setBackground(new Color(84, 106, 117));
         warehouseBtn.setForeground(Color.white);
         JButton accountBtn = new JButton("Tài khoản");
-        accountBtn.setBounds(10, 350, 120, 50);
+        accountBtn.setBounds(1, 330, 148, 50);
         accountBtn.setFocusable(false);
         accountBtn.setBackground(new Color(84, 106, 117));
         accountBtn.setForeground(Color.white);
         JButton statsBtn = new JButton("Thống kê");
-        statsBtn.setBounds(10, 450, 120, 50);
+        statsBtn.setBounds(1, 430, 148, 50);
         statsBtn.setFocusable(false);
         statsBtn.setBackground(new Color(84, 106, 117));
         statsBtn.setForeground(Color.white);

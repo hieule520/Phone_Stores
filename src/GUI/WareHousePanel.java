@@ -278,7 +278,6 @@ btn.addActionListener(new ActionListener() {
     
     private void addProduct() {
         try {
-            // int id = Integer.parseInt(tfProductID.getText().trim());
             String name = tfProductName.getText().trim();
             String type = (String) cbType.getSelectedItem();
             String brand = (String) cbBrand.getSelectedItem();
@@ -294,7 +293,6 @@ btn.addActionListener(new ActionListener() {
             }
     
             ProductsDTO product = new ProductsDTO();
-            // product.setProductID(id);
             product.setProductName(name);
             product.setType(type);
             product.setBrand(brand);
