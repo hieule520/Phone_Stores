@@ -2,7 +2,7 @@ package BLL;
 
 import DAL.ProductsDAL;
 import DTO.ProductsDTO;
-import java.util.ArrayList;
+import java.util.Vector;
 
 public class ProductsBLL {
     private ProductsDAL dal;
@@ -21,16 +21,16 @@ public class ProductsBLL {
     }
     
 
-    public ArrayList<ProductsDTO> getAllProducts() {
+    public Vector<ProductsDTO> getAllProducts() {
         return dal.getAllProducts();
     }
 
     public String addProduct(ProductsDTO p) {
-        if (dal.isProductIDExists(p.getProductID())) {
-            return "Sản phẩm đã tồn tại!";
+        if (dal.isProductNameExists(p.getProductName())) {
+            return "Tên sản phẩm đã tồn tại!";
         }
-
         boolean success = dal.insertProduct(p);
         return success ? "Thêm sản phẩm thành công!" : "Thêm sản phẩm thất bại!";
     }
+    
 }
