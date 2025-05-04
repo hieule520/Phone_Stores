@@ -3,7 +3,7 @@ package GUI;
 import java.awt.*;
 import java.awt.event.*;
 import java.math.BigDecimal;
-import java.util.ArrayList;
+import java.util.Vector;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import BLL.ProductsBLL;
@@ -17,7 +17,7 @@ public class WareHousePanel extends JPanel {
     private String selectedImagePath = "";
 
     ProductsBLL productsBLL = new ProductsBLL();
-ArrayList<ProductsDTO> productList = productsBLL.getAllProducts();
+    Vector<ProductsDTO> productList = productsBLL.getAllProducts();
 
     public WareHousePanel() {
         setLayout(null);
@@ -63,6 +63,7 @@ for (ProductsDTO product : productList) {
         // Labels & Fields
         addLabel("ID sản Phẩm:", 30, 414);
         tfProductID = addTextField(155, 412);
+        tfProductID.setEditable(false);
 
         addLabel("Tên Sản Phẩm:", 30, 477);
         tfProductName = addTextField(155, 475);
@@ -277,7 +278,7 @@ btn.addActionListener(new ActionListener() {
     
     private void addProduct() {
         try {
-            int id = Integer.parseInt(tfProductID.getText().trim());
+            // int id = Integer.parseInt(tfProductID.getText().trim());
             String name = tfProductName.getText().trim();
             String type = (String) cbType.getSelectedItem();
             String brand = (String) cbBrand.getSelectedItem();
@@ -293,7 +294,7 @@ btn.addActionListener(new ActionListener() {
             }
     
             ProductsDTO product = new ProductsDTO();
-            product.setProductID(id);
+            // product.setProductID(id);
             product.setProductName(name);
             product.setType(type);
             product.setBrand(brand);

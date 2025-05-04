@@ -42,7 +42,7 @@ public class ProductsDAL {
 
     public boolean insertProduct(ProductsDTO p) {
         String sql = "INSERT INTO products (ProductName, Type, Brand, Stock, Prices, Status, Date, Image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
+        try (PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, p.getProductName());
             ps.setString(2, p.getType());
             ps.setString(3, p.getBrand());
@@ -51,12 +51,35 @@ public class ProductsDAL {
             ps.setString(6, p.getStatus());
             ps.setDate(7, p.getDate());
             ps.setString(8, p.getImages());
-            return ps.executeUpdate() > 0;
+    
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected > 0) {
+                try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        int generatedId = generatedKeys.getInt(1);
+                        p.setProductID(generatedId); 
+                    }
+                }
+                return true;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
     }
+    
+
+    // public boolean isProductIDExists(int productID) {
+    //     String sql = "SELECT ProductID FROM products WHERE ProductID = ?";
+    //     try (PreparedStatement ps = con.prepareStatement(sql)) {
+    //         ps.setInt(1, productID);
+    //         ResultSet rs = ps.executeQuery();
+    //         return rs.next(); // Trả về true nếu tìm thấy tên sản phẩm
+    //     } catch (SQLException e) {
+    //         e.printStackTrace();
+    //     }
+    //     return false;
+    // }
     
     public boolean isProductNameExists(String productName) {
         String sql = "SELECT ProductName FROM products WHERE ProductName = ?";

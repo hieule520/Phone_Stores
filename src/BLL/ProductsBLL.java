@@ -29,6 +29,9 @@ public class ProductsBLL {
         if (dal.isProductNameExists(p.getProductName())) {
             return "Tên sản phẩm đã tồn tại!";
         }
+        // if (dal.isProductIDExists(p.getProductID())) {
+        //     return "Tên sản phẩm đã tồn tại!";
+        // }
         boolean success = dal.insertProduct(p);
         return success ? "Thêm sản phẩm thành công!" : "Thêm sản phẩm thất bại!";
     }
