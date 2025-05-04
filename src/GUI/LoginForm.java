@@ -11,6 +11,7 @@ public class LoginForm extends JFrame {
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JButton loginButton, registerButton;
+    EmployeeBLL empl = new EmployeeBLL();
 
     public LoginForm() {
         setTitle("Đăng nhập - NewEra");
@@ -82,6 +83,11 @@ public class LoginForm extends JFrame {
         loginButton.setBackground(new Color(59, 228, 119));
         loginButton.setFont(new Font("Arial", Font.BOLD, 13));
         loginButton.setFocusable(false);
+        loginButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                loginAction(e);
+            }
+        });
         rightPanel.add(loginButton);
 
         // Register prompt
@@ -109,20 +115,22 @@ public class LoginForm extends JFrame {
         setVisible(true);
     }
 
-    private void handleLogin() {
-        try {
-            EmployeeBLL bll = new EmployeeBLL();
-            EmployeeDTO emp = bll.login(usernameField.getText(), new String(passwordField.getPassword()));
-            if (emp != null) {
-                JOptionPane.showMessageDialog(this, "Xin chào " + emp.getFullName() + " (" + emp.getRole() + ")");
-                dispose();
-                new HomeForm().setVisible(true);
-            } else {
-                JOptionPane.showMessageDialog(this, "Sai tài khoản hoặc mật khẩu");
+    
+    private void loginAction(ActionEvent e){
+        try{
+            if(usernameField.getText().trim().equals("")||passwordField.getPassword().toString().trim().equals("")){
+                JOptionPane.showMessageDialog(this, "Vui lòng điền đầy đủ thông tin");
+            }else{                
+                String result = empl.login(usernameField.getText(), new String(passwordField.getPassword()));
+                JOptionPane.showMessageDialog(this, result);
+                if(result.equals("Đăng nhập thành công!")){
+                    dispose();
+                    new HomeForm().setVisible(true);
+                }
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Lỗi kết nối cơ sở dữ liệu");
+        }catch(NumberFormatException ex){
+            System.out.println("Thông tin không hợp lệ: "+ex.getMessage());
         }
+
     }
 }
