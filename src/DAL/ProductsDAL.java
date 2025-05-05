@@ -31,6 +31,7 @@ public class ProductsDAL {
                 p.setPrices(rs.getBigDecimal("Prices"));
                 p.setStatus(rs.getString("Status"));
                 p.setDate(rs.getDate("Date"));
+                p.setImages(rs.getString("Image"));
                 list.add(p);
             }
         } catch (SQLException e) {
@@ -40,7 +41,7 @@ public class ProductsDAL {
     }
 
     public boolean insertProduct(ProductsDTO p) {
-        String sql = "INSERT INTO products (ProductName, Type, Brand, Stock, Prices, Status, Date) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO products (ProductName, Type, Brand, Stock, Prices, Status, Date, Image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, p.getProductName());
             ps.setString(2, p.getType());
@@ -49,6 +50,7 @@ public class ProductsDAL {
             ps.setBigDecimal(5, p.getPrices());
             ps.setString(6, p.getStatus());
             ps.setDate(7, p.getDate());
+            ps.setString(8, p.getImages());
     
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected > 0) {
@@ -79,7 +81,7 @@ public class ProductsDAL {
     }
     
     public boolean updateProduct(ProductsDTO p) {
-        String sql = "UPDATE products SET ProductName = ?, Type = ?, Brand = ?, Stock = ?, Prices = ?, Status = ?, Date = ? WHERE ProductID = ?";
+        String sql = "UPDATE products SET ProductName = ?, Type = ?, Brand = ?, Stock = ?, Prices = ?, Status = ?, Date = ?, Image = ? WHERE ProductID = ?";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, p.getProductName());
             ps.setString(2, p.getType());
@@ -88,7 +90,8 @@ public class ProductsDAL {
             ps.setBigDecimal(5, p.getPrices());
             ps.setString(6, p.getStatus());
             ps.setDate(7, p.getDate());
-            ps.setInt(8, p.getProductID());
+            ps.setString(8, p.getImages());
+            ps.setInt(9, p.getProductID());
     
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {

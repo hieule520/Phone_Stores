@@ -27,7 +27,7 @@ public class HomeForm extends JFrame {
         // Panel menu trái
         JPanel menuPanel = new JPanel(); 
         ImageIcon menuIcon = new ImageIcon("img/other/newera-icon2.png");
-        Image menuIcon1 = menuIcon.getImage().getScaledInstance(100, 30, Image.SCALE_DEFAULT);
+        Image menuIcon1 = menuIcon.getImage().getScaledInstance(100, 30, Image.SCALE_SMOOTH);
         ImageIcon menuIcon2 = new ImageIcon(menuIcon1);
         menuPanel.setPreferredSize(new Dimension(150, 700));
         menuPanel.setLayout(null);
