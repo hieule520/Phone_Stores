@@ -124,5 +124,38 @@ public Vector<StatisticalDTO> getToppro(){
         }
         return arr;
     }
+    public Vector<StatisticalDTO> getTopem(){
+        Vector<StatisticalDTO> arr = new Vector<StatisticalDTO>();
+        Connection con =DBConnection.openConnect();
+        try{
+            String sql = """
+              
+                       SELECT e.EmployeeID, e.Username, 
+                       COUNT(DISTINCT si.InvoiceID) AS OrderCount, 
+                       SUM(sid.TotalPrices) AS TotalSpent
+                       FROM employees e
+                       JOIN salesinvoices si ON e.EmployeeID = si.EmployeeID
+                       JOIN salesinvoicedetails sid ON si.InvoiceID = sid.InvoiceID
+                       GROUP BY e.EmployeeID, e.Username
+                       ORDER BY TotalSpent DESC
+                       LIMIT 5
+                    """;
+                    Statement stm = con.createStatement();
+                    ResultSet rs = stm.executeQuery(sql);
+                    while(rs.next()){
+                        StatisticalDTO dto = new StatisticalDTO();
+                        dto.setUserName(rs.getString("userName"));
+                        dto.setOrderCount(rs.getInt("orderCount"));
+                        dto.setTotalSpent(rs.getDouble("totalSpent"));
+                        arr.add(dto);
+
+                    }
+        }catch(SQLException ex){
+            System.out.println("lỗi"+ ex.getMessage());
+        }finally{
+            DBConnection.closeConnect(con);
+        }
+        return arr;
+    }
   
 }

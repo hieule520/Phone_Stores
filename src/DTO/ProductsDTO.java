@@ -12,6 +12,7 @@ public class ProductsDTO {
     private BigDecimal prices;
     private String status;
     private Date date;
+  
 
     public int getProductID() {
         return productID;

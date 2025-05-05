@@ -12,9 +12,14 @@ public class StatisticalDTO {
     private int quantitySold;
     private double revenue;
     private String brand;
+    private String userName;
 
-
-    // Getters
+    public String getUserName(){
+        return userName;
+    }
+    public void setUserName(String userName){
+        this.userName = userName;
+    }
     public int getMonth() {
         return month;
     }

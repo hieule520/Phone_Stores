@@ -11,9 +11,8 @@ import java.util.Vector;
 
 public class statistical extends JPanel {
 
-    private JTable tableRevenue, tableTopCustomers, tableTopProducts, tableCategoryRevenue, tableRevenueRate;
+    private JTable tableRevenue, tableTopCustomers, tableTopProducts, tableCategoryRevenue, tableRevenueRate,tableTopEmployees;
     private JLabel totalSalesLabel, totalOrdersLabel, totalRevenueLabel;
-    private JButton filterButton, exportButton;
 private StatisticalBLL bll = new StatisticalBLL();
 
     public statistical() {
@@ -22,22 +21,12 @@ private StatisticalBLL bll = new StatisticalBLL();
         setLayout(new BorderLayout());
 
         // Tiêu đề
-        JLabel titleLabel = new JLabel("THỐNG KÊ DOANH THU", JLabel.CENTER);
+        JLabel titleLabel = new JLabel("THỐNG KÊ", JLabel.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
         titleLabel.setForeground(Color.white);
         titleLabel.setBorder(BorderFactory.createEmptyBorder(20, 10, 10, 10));
         add(titleLabel, BorderLayout.NORTH);
 
-        // Bộ lọc
-        // JPanel filterPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 10));
-
-        // filterButton = new JButton("Lọc");
-        // exportButton = new JButton("Xuất báo cáo");
-        // filterPanel.add(filterButton);
-        // filterPanel.add(exportButton);
-        // add(filterPanel, BorderLayout.BEFORE_FIRST_LINE);
-
-        // Panel chứa nhiều bảng, dùng tabbedPane
         JTabbedPane tabbedPane = new JTabbedPane();
         tabbedPane.setBackground(new Color(57, 219, 114));
         tabbedPane.setFocusable(false);
@@ -62,6 +51,16 @@ private StatisticalBLL bll = new StatisticalBLL();
                 }
         );
         tabbedPane.add("Top 5 khách hàng", createTitledPanel("Top 5 khách hàng mua nhiều nhất", tableTopCustomers));
+
+        //top nhân viên
+        tableTopEmployees = createTable(
+                new String[]{"Nhân viên", "Số đơn", "Tổng bán (VNĐ)"},
+                new Object[][]{
+                        {"Nguyễn Văn A", 15, 12000000},
+                        {"Trần Thị B", 13, 11000000}
+                }
+        );
+        tabbedPane.add("Top 5 nhân viên", createTitledPanel("Top 5 nhân viên bán nhiều nhất", tableTopEmployees));
 
         // Top sản phẩm
         tableTopProducts = createTable(
@@ -123,12 +122,23 @@ private StatisticalBLL bll = new StatisticalBLL();
         loadTopCustomers();
         loadTopProducts();
         loadBrandRevenue();
+        loadRevenueGrowthRate();
+        loadTopEmployees();
     }
 
     private JTable createTable(String[] columns, Object[][] data) {
-        return new JTable(new DefaultTableModel(data, columns));
+        DefaultTableModel model = new DefaultTableModel(data, columns) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Không cho phép chỉnh sửa ô nào cả
+            }
+        };
+    
+        JTable table = new JTable(model);
+        table.setEnabled(false); // Tùy chọn: cũng ngăn chọn ô nếu bạn muốn bảng chỉ để hiển thị
+        return table;
     }
-
+    
     private JPanel createTitledPanel(String title, JTable table) {
         JScrollPane scrollPane = new JScrollPane(table);
         JPanel panel = new JPanel(new BorderLayout());
@@ -188,6 +198,24 @@ private StatisticalBLL bll = new StatisticalBLL();
     totalRevenueLabel.setText("Tổng doanh thu: " + String.format("%,.0f VNĐ", totalRevenue));
     
 }
+private void loadTopEmployees() {
+        Vector<StatisticalDTO> employees = bll.getTopem();
+    
+        String[] columns = {"Nhân viên", "Số đơn", "Tổng bán (VNĐ)"};
+        DefaultTableModel model = new DefaultTableModel(columns, 0);
+    
+        for (StatisticalDTO dto : employees) {
+            Object[] row = new Object[]{
+                    dto.getUserName(),
+                    dto.getOrderCount(),
+                    String.format("%,.0f VNĐ", dto.getTotalSpent())
+            };
+            model.addRow(row);
+        }
+    
+        tableTopEmployees.setModel(model);
+    }
+    
 private void loadTopProducts() {
         Vector<StatisticalDTO> products = bll.getToppro();
     
@@ -221,6 +249,19 @@ private void loadTopProducts() {
     
         tableCategoryRevenue.setModel(model);
     }
+    private void loadRevenueGrowthRate() {
+        Vector<String[]> growthRates = bll.getRevenueGrowthRate();
+    
+        String[] columns = {"Tháng", "So với tháng trước (%)"};
+        DefaultTableModel model = new DefaultTableModel(columns, 0);
+    
+        for (String[] row : growthRates) {
+            model.addRow(row);
+        }
+    
+        tableRevenueRate.setModel(model);
+    }
+    
     
     
 
