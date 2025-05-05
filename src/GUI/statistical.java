@@ -112,6 +112,7 @@ private StatisticalBLL bll = new StatisticalBLL();
         totalOrdersLabel.setFont(summaryFont);
         totalSalesLabel.setFont(summaryFont);
         totalRevenueLabel.setFont(summaryFont);
+        
 
         summaryPanel.add(totalOrdersLabel);
         summaryPanel.add(totalSalesLabel);

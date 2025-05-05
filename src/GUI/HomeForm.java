@@ -11,12 +11,13 @@ import GUI.WareHousePanel;
 public class HomeForm extends JFrame {
     private JPanel contentPanel;  
 
+
     public HomeForm() {
         ImageIcon favicon = new ImageIcon("img/other/newera-logo.png");
         setIconImage(favicon.getImage());
         setTitle("Trang chính");
         setSize(1240, 790);
-        setResizable(true);
+        setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
@@ -49,8 +50,22 @@ public class HomeForm extends JFrame {
         statsBtn.setFocusable(false);
         statsBtn.setBackground(new Color(84, 106, 117));
         statsBtn.setForeground(Color.white);
+        JButton exitBtn = new JButton("Thoát");
+        exitBtn.setBounds(1,705,148,50);
+        exitBtn.setFocusable(false);
+        exitBtn.setBackground(new Color(84, 106, 117));
+        exitBtn.setForeground(Color.white);
+        exitBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+               int a = JOptionPane.showConfirmDialog(HomeForm.this,"có muốn không","thoát về màn hình đăng nhập", JOptionPane.YES_NO_OPTION);
+               if (a == JOptionPane.YES_OPTION) {
+                dispose();
+                new LoginForm().setVisible(true);
+            }
+            }
+        });
 
-
+        menuPanel.add(exitBtn);
         menuPanel.add(storeBtn);
         menuPanel.add(warehouseBtn);
         menuPanel.add(accountBtn);
