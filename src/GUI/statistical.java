@@ -148,7 +148,6 @@ private StatisticalBLL bll = new StatisticalBLL();
     }
     private void loadTopCustomers() {
         Vector<StatisticalDTO> customers = bll.getTopCus();
-        System.out.println("Số lượng khách hàng nhận được: " + customers.size()); // ✅ debug
     
         String[] columns = {"Khách hàng", "Số đơn", "Tổng chi (VNĐ)"};
         DefaultTableModel model = new DefaultTableModel(columns, 0);
