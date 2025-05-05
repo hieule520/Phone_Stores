@@ -1,0 +1,19 @@
+package DAL;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+
+public class test {
+    private Connection con;
+    public test(){
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/phone_store", "root", "");
+   
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
+        }
+
+    
+}

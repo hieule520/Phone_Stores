@@ -5,22 +5,14 @@ import java.sql.*;
 import java.util.Vector;
 
 public class ProductsDAL {
-    private Connection con;
-
-    public ProductsDAL() {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/phone_store", "root", "");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
 
     public Vector<ProductsDTO> getAllProducts() {
-        Vector<ProductsDTO> list = new Vector<>();
+        Vector<ProductsDTO> list = new Vector<ProductsDTO>();
+        Connection con = DBConnection.openConnect();
         String sql = "SELECT * FROM products";
-        try (PreparedStatement ps = con.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+        try{
+            Statement stm = con.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
             while (rs.next()) {
                 ProductsDTO p = new ProductsDTO();
                 p.setProductID(rs.getInt("ProductID"));
@@ -35,14 +27,20 @@ public class ProductsDAL {
                 list.add(p);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Lỗi cơ sở dữ liệu"+e.getMessage());
+        }finally{
+            DBConnection.closeConnect(con);
         }
         return list;
     }
 
     public boolean insertProduct(ProductsDTO p) {
-        String sql = "INSERT INTO products (ProductName, Type, Brand, Stock, Prices, Status, Date, Image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        Connection con = DBConnection.openConnect();
+        String sql = "INSERT INTO products (ProductName, Type, Brand, Stock, Prices, Status, Date, Image) "+
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        boolean result = false;
+        try{
+            PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, p.getProductName());
             ps.setString(2, p.getType());
             ps.setString(3, p.getBrand());
@@ -51,38 +49,43 @@ public class ProductsDAL {
             ps.setString(6, p.getStatus());
             ps.setDate(7, p.getDate());
             ps.setString(8, p.getImages());
-    
-            int rowsAffected = ps.executeUpdate();
-            if (rowsAffected > 0) {
-                try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
-                    if (generatedKeys.next()) {
-                        int generatedId = generatedKeys.getInt(1);
-                        p.setProductID(generatedId); 
-                    }
-                }
-                return true;
+            if(ps.executeUpdate()>=1){
+                result = true;
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }catch (SQLException e) {
+            System.out.println("Lỗi cơ sở dữ liệu "+e.getMessage());
+        }finally{
+            DBConnection.closeConnect(con);
         }
-        return false;
+        return result;
     }
-    
+
     public boolean isProductNameExists(String productName) {
+        Connection con = DBConnection.openConnect();
         String sql = "SELECT ProductName FROM products WHERE ProductName = ?";
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
+        boolean result = false;
+        try{
+            PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, productName);
             ResultSet rs = ps.executeQuery();
-            return rs.next(); 
+            if(rs.next()){
+                result = true;
+            }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Lỗi cơ sở dữ liệu "+e.getMessage());
+        }finally{
+            DBConnection.closeConnect(con);
         }
-        return false;
+        return result;
     }
     
     public boolean updateProduct(ProductsDTO p) {
-        String sql = "UPDATE products SET ProductName = ?, Type = ?, Brand = ?, Stock = ?, Prices = ?, Status = ?, Date = ?, Image = ? WHERE ProductID = ?";
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
+        Connection con = DBConnection.openConnect();
+        boolean result = false;
+        String sql = "UPDATE products SET ProductName = ?, Type = ?, Brand = ?, Stock = ?, "+
+                     "Prices = ?, Status = ?, Date = ?, Image = ? WHERE ProductID = ?";
+        try{
+            PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, p.getProductName());
             ps.setString(2, p.getType());
             ps.setString(3, p.getBrand());
@@ -92,24 +95,35 @@ public class ProductsDAL {
             ps.setDate(7, p.getDate());
             ps.setString(8, p.getImages());
             ps.setInt(9, p.getProductID());
-    
-            return ps.executeUpdate() > 0;
+            
+            if(ps.executeUpdate()>=1){
+                result = true;
+            }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Lỗi cơ sở dữ liệu "+e.getMessage());
+        }finally{
+            DBConnection.closeConnect(con);
         }
-        return false;
+        return result;
     }
     
     
     public boolean deleteProduct(int productID) {
+        Connection con = DBConnection.openConnect();
+        boolean result = false;
         String sql = "DELETE FROM products WHERE ProductID = ?";
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
+        try{
+            PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, productID);
-            return ps.executeUpdate() > 0;
+            if(ps.executeUpdate()>=1){
+                result = true;
+            }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Lỗi cơ sở dữ liệu "+e.getMessage());
+        }finally{
+            DBConnection.closeConnect(con);
         }
-        return false;
+        return result;
     }
     
 }

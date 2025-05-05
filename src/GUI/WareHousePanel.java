@@ -5,7 +5,6 @@ import java.awt.event.*;
 import java.math.BigDecimal;
 import java.util.Vector;
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import BLL.ProductsBLL;
 import DTO.ProductsDTO;
