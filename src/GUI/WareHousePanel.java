@@ -5,6 +5,7 @@ import java.awt.event.*;
 import java.math.BigDecimal;
 import java.util.Vector;
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import BLL.ProductsBLL;
 import DTO.ProductsDTO;
@@ -13,8 +14,6 @@ public class WareHousePanel extends JPanel {
     private JTable table;
     private JTextField tfProductID, tfProductName, tfStock, tfPrice;
     private JComboBox<String> cbType, cbBrand, cbStatus;
-    private JLabel imageLabel;
-    private String selectedImagePath = "";
 
     ProductsBLL productsBLL = new ProductsBLL();
     Vector<ProductsDTO> productList = productsBLL.getAllProducts();
@@ -24,7 +23,7 @@ public class WareHousePanel extends JPanel {
         setBackground(new Color(18, 18, 18)); 
 
         // Table
-        String[] columns = {"ProductID", "Product Name", "Type", "Brand", "Stock", "Prices", "Status", "Date", "Images"};
+        String[] columns = {"ProductID", "Product Name", "Type", "Brand", "Stock", "Prices", "Status", "Date"};
         DefaultTableModel model = new DefaultTableModel(columns, 0){
            
        @Override
@@ -44,7 +43,6 @@ for (ProductsDTO product : productList) {
     row[5] = product.getPrices();
     row[6] = product.getStatus();
     row[7] = product.getDate();
-    row[8] = product.getImages(); 
     model.addRow(row); 
 }
 
@@ -61,38 +59,30 @@ for (ProductsDTO product : productList) {
         add(separator);
 
         // Labels & Fields
-        addLabel("ID sản Phẩm:", 30, 414);
-        tfProductID = addTextField(155, 412);
+        addLabel("ID sản Phẩm:", 145, 414);
+        tfProductID = addTextField(255, 412);
         tfProductID.setEditable(false);
 
-        addLabel("Tên Sản Phẩm:", 30, 477);
-        tfProductName = addTextField(155, 475);
+        addLabel("Tên Sản Phẩm:", 130, 477);
+        tfProductName = addTextField(255, 475);
 
-        addLabel("Hệ Điều Hành:", 30, 538);
-        cbType = addComboBox(new String[]{"Ios", "Android"}, 155, 536);
+        addLabel("Hệ Điều Hành:", 137, 538);
+        cbType = addComboBox(new String[]{"Ios", "Android"}, 255, 536);
 
-        addLabel("Hãng:", 94, 594);
-        cbBrand = addComboBox(new String[]{"Iphone", "Samsung", "Xiaomi", "Realme", "Huawei", "Vinsmart"}, 155, 592);
+        addLabel("Hãng:", 190, 594);
+        cbBrand = addComboBox(new String[]{"Apple", "Samsung", "Xiaomi", "Realme", "Huawei", "Vinsmart"}, 255, 592);
 
-        addLabel("Số Lượng:", 500, 414);
-        tfStock = addTextField(586, 412);
+        addLabel("Số Lượng:", 670, 414);
+        tfStock = addTextField(756, 412);
         tfStock.setText("0");
 
-        addLabel("Giá:", 540, 477);
-        tfPrice = addTextField(586, 475);
+        addLabel("Giá:", 710, 477);
+        tfPrice = addTextField(756, 475);
         tfPrice.setText("0");
 
-        addLabel("Trạng Thái:", 500, 538);
-        cbStatus = addComboBox(new String[]{"Còn Hàng", "Hết Hàng"}, 586, 536);
+        addLabel("Trạng Thái:", 670, 538);
+        cbStatus = addComboBox(new String[]{"Còn Hàng", "Hết Hàng"}, 756, 536);
 
-        // Image Panel
-        JPanel imagePanel = new JPanel();
-        imagePanel.setBounds(866, 410, 158, 212);
-        imagePanel.setBackground(Color.WHITE);
-        imageLabel = new JLabel();
-        imageLabel.setPreferredSize(new Dimension(158, 212));
-        imagePanel.add(imageLabel);
-        add(imagePanel);
 // Sự kiện click vào bảng
 table.addMouseListener(new MouseAdapter() {
     @Override
@@ -105,25 +95,15 @@ table.addMouseListener(new MouseAdapter() {
             cbBrand.setSelectedItem(table.getValueAt(selectedRow, 3).toString());
             tfStock.setText(table.getValueAt(selectedRow, 4).toString());
             tfPrice.setText(table.getValueAt(selectedRow, 5).toString());
-            cbStatus.setSelectedItem(table.getValueAt(selectedRow, 6).toString());
-
-            // Hiển thị ảnh
-            selectedImagePath = table.getValueAt(selectedRow, 8).toString(); 
-            if (!selectedImagePath.isEmpty()) {
-                ImageIcon icon = new ImageIcon(selectedImagePath);
-                Image scaledImage = icon.getImage().getScaledInstance(158, 212, Image.SCALE_SMOOTH);
-                imageLabel.setIcon(new ImageIcon(scaledImage));
-            } else {
-                imageLabel.setIcon(null);
-            }
+            cbStatus.setSelectedItem(table.getValueAt(selectedRow, 6).toString());        
         }
     }
 });
 
         // Buttons
-        String[] buttonLabels = {"Nhập Ảnh", "Thêm", "Cập Nhật", "Reset", "Xóa"};
-        int[] xPositions = {885, 133, 287, 445, 599};
-        int[] yPositions = {643, 685, 685, 685, 685};
+        String[] buttonLabels = { "Thêm", "Cập Nhật", "Reset", "Xóa"};
+        int[] xPositions = { 247, 405, 559, 713};
+        int[] yPositions = { 685, 685, 685, 685};
         for (int i = 0; i < buttonLabels.length; i++) {
             Roundbtn btn = new Roundbtn(buttonLabels[i]);
             btn.setBounds(xPositions[i], yPositions[i], 122, 50);
@@ -136,17 +116,6 @@ btn.addActionListener(new ActionListener() {
     public void actionPerformed(ActionEvent e) {
         if (btn.getText().equals("Thêm")) {
             addProduct();
-        }
-        else if (btn.getText().equals("Nhập Ảnh")) {
-            JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-            int result = fileChooser.showOpenDialog(null);
-            if (result == JFileChooser.APPROVE_OPTION) {
-                selectedImagePath = fileChooser.getSelectedFile().getAbsolutePath();
-                ImageIcon icon = new ImageIcon(selectedImagePath);
-                Image scaledImage = icon.getImage().getScaledInstance(158, 212, Image.SCALE_SMOOTH);
-                imageLabel.setIcon(new ImageIcon(scaledImage));
-            }
         }
         else if (btn.getText().equals("Cập Nhật")) {
             updateProduct();
@@ -163,8 +132,7 @@ btn.addActionListener(new ActionListener() {
             cbType.setSelectedIndex(0);
             cbBrand.setSelectedIndex(0);
             cbStatus.setSelectedIndex(0);
-            selectedImagePath = "";
-            imageLabel.setIcon(null);
+
         }
         
     }
@@ -211,9 +179,13 @@ btn.addActionListener(new ActionListener() {
             String brand = (String) cbBrand.getSelectedItem();
             int stock = Integer.parseInt(tfStock.getText().trim());
             BigDecimal price = new BigDecimal(tfPrice.getText().trim());
+            if (stock == 0) {
+                cbStatus.setSelectedItem("Hết Hàng");
+            } else {
+                cbStatus.setSelectedItem("Còn Hàng");
+            }
             String status = (String) cbStatus.getSelectedItem();
             java.sql.Date date = new java.sql.Date(System.currentTimeMillis());
-            String imagePath = selectedImagePath;
     
             if (name.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Tên sản phẩm không được để trống.");
@@ -229,7 +201,6 @@ btn.addActionListener(new ActionListener() {
             product.setPrices(price);
             product.setStatus(status);
             product.setDate(date);
-            product.setImages(imagePath);
     
             String result = productsBLL.updateProduct(product);
             JOptionPane.showMessageDialog(this, result);
@@ -244,7 +215,6 @@ btn.addActionListener(new ActionListener() {
                 model.setValueAt(product.getPrices(), selectedRow, 5);
                 model.setValueAt(product.getStatus(), selectedRow, 6);
                 model.setValueAt(product.getDate(), selectedRow, 7);
-                model.setValueAt(product.getImages(), selectedRow, 8);
             }
     
         } catch (Exception ex) {
@@ -285,12 +255,22 @@ btn.addActionListener(new ActionListener() {
             BigDecimal price = new BigDecimal(tfPrice.getText().trim());
             String status = (String) cbStatus.getSelectedItem();
             java.sql.Date date = new java.sql.Date(System.currentTimeMillis());
-            String imagePath = selectedImagePath; 
 
-            if(name.isEmpty()|| selectedImagePath.isEmpty() ){
+            if(name.isEmpty() ){
                 JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ thông tin!");
                         return;
             }
+            if (stock == 0) {
+                status = "Hết Hàng";
+                cbStatus.setSelectedItem("Hết Hàng");
+            }else if(stock >0) {
+                status = "Còn Hàng";
+                cbStatus.setSelectedItem("Còn Hàng");
+            } else if(stock <0){
+                JOptionPane.showMessageDialog(this, "Vui lòng nhập số lượng hợp lệ!");
+                return;
+            }
+            
     
             ProductsDTO product = new ProductsDTO();
             product.setProductName(name);
@@ -300,7 +280,6 @@ btn.addActionListener(new ActionListener() {
             product.setPrices(price);
             product.setStatus(status);
             product.setDate(date);
-            product.setImages(imagePath);
     
             ProductsBLL bll = new ProductsBLL();
 String result = bll.addProduct(product);
@@ -317,7 +296,6 @@ if (result.equals("Thêm sản phẩm thành công!")) {
         product.getPrices(),
         product.getStatus(),
         product.getDate().toString(),
-        product.getImages()
     });
 }}catch(Exception ex) {
     JOptionPane.showMessageDialog(this, "Lỗi khi thêm sản phẩm");

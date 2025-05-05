@@ -1,0 +1,227 @@
+package GUI;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+
+import BLL.StatisticalBLL;
+import DTO.StatisticalDTO;
+
+import java.awt.*;
+import java.util.Vector;
+
+public class statistical extends JPanel {
+
+    private JTable tableRevenue, tableTopCustomers, tableTopProducts, tableCategoryRevenue, tableRevenueRate;
+    private JLabel totalSalesLabel, totalOrdersLabel, totalRevenueLabel;
+    private JButton filterButton, exportButton;
+private StatisticalBLL bll = new StatisticalBLL();
+
+    public statistical() {
+        
+        setBackground(new Color(31, 31, 31));
+        setLayout(new BorderLayout());
+
+        // Tiêu đề
+        JLabel titleLabel = new JLabel("THỐNG KÊ DOANH THU", JLabel.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        titleLabel.setForeground(Color.white);
+        titleLabel.setBorder(BorderFactory.createEmptyBorder(20, 10, 10, 10));
+        add(titleLabel, BorderLayout.NORTH);
+
+        // Bộ lọc
+        // JPanel filterPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 10));
+
+        // filterButton = new JButton("Lọc");
+        // exportButton = new JButton("Xuất báo cáo");
+        // filterPanel.add(filterButton);
+        // filterPanel.add(exportButton);
+        // add(filterPanel, BorderLayout.BEFORE_FIRST_LINE);
+
+        // Panel chứa nhiều bảng, dùng tabbedPane
+        JTabbedPane tabbedPane = new JTabbedPane();
+        tabbedPane.setBackground(new Color(57, 219, 114));
+        tabbedPane.setFocusable(false);
+
+        // Doanh thu theo tháng
+        tableRevenue = createTable(
+                new String[]{"Tháng", "Số đơn hàng", "Sản phẩm bán", "Doanh thu"},
+                new Object[][]{
+                        {"Tháng 1", 120, 400, 15000000},
+                        {"Tháng 2", 95, 350, 12500000}
+                }
+        );
+        tabbedPane.add("Doanh thu theo tháng", createTitledPanel("Doanh thu theo tháng", tableRevenue));
+
+
+        // Top khách hàng
+        tableTopCustomers = createTable(
+                new String[]{"Khách hàng", "Số đơn", "Tổng chi (VNĐ)"},
+                new Object[][]{
+                        {"Nguyễn Văn A", 15, 12000000},
+                        {"Trần Thị B", 13, 11000000}
+                }
+        );
+        tabbedPane.add("Top 5 khách hàng", createTitledPanel("Top 5 khách hàng mua nhiều nhất", tableTopCustomers));
+
+        // Top sản phẩm
+        tableTopProducts = createTable(
+                new String[]{"Sản phẩm", "Số lượng bán", "Doanh thu (VNĐ)"},
+                new Object[][]{
+                        {"Áo thun", 150, 4500000},
+                        {"Giày", 130, 7800000}
+                }
+        );
+        tabbedPane.add("Top 5 sản phẩm", createTitledPanel("Top 5 sản phẩm bán chạy", tableTopProducts));
+
+       
+
+        // Doanh thu theo danh mục
+        tableCategoryRevenue = createTable(
+                new String[]{"Hãng sản phẩm", "Doanh thu (VNĐ)"},
+                new Object[][]{
+                        {"Thời trang", 25000000},
+                        {"Công nghệ", 32000000}
+                }
+        );
+        tabbedPane.add("Theo hãng", createTitledPanel("Doanh thu theo hãng sản phẩm", tableCategoryRevenue));
+
+        // Tỷ lệ tăng/giảm
+        tableRevenueRate = createTable(
+                new String[]{"Tháng", "So với tháng trước (%)"},
+                new Object[][]{
+                        {"Tháng 4", "+5%"},
+                        {"Tháng 5", "-3%"}
+                }
+        );
+        tabbedPane.add("Tăng/Giảm doanh thu", createTitledPanel("Tỷ lệ tăng/giảm doanh thu", tableRevenueRate));
+
+        add(tabbedPane, BorderLayout.CENTER);
+
+        // Panel thống kê tổng
+        JPanel summaryPanel = new JPanel(new GridLayout(1, 3, 10, 10));
+        summaryPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        summaryPanel.setBackground(new Color(31, 31, 31));
+
+        totalOrdersLabel = new JLabel("Tổng đơn hàng: ", JLabel.CENTER);
+        totalOrdersLabel.setForeground(Color.white);
+        totalSalesLabel = new JLabel("Tổng sản phẩm bán: ", JLabel.CENTER);
+        totalSalesLabel.setForeground(Color.white);
+        totalRevenueLabel = new JLabel("Tổng doanh thu: ", JLabel.CENTER);
+        totalRevenueLabel.setForeground(Color.white);
+
+        Font summaryFont = new Font("Arial", Font.BOLD, 16);
+        totalOrdersLabel.setFont(summaryFont);
+        totalSalesLabel.setFont(summaryFont);
+        totalRevenueLabel.setFont(summaryFont);
+
+        summaryPanel.add(totalOrdersLabel);
+        summaryPanel.add(totalSalesLabel);
+        summaryPanel.add(totalRevenueLabel);
+
+        add(summaryPanel, BorderLayout.SOUTH);
+        loadMonthlyRevenueData();
+        loadTopCustomers();
+        loadTopProducts();
+        loadBrandRevenue();
+    }
+
+    private JTable createTable(String[] columns, Object[][] data) {
+        return new JTable(new DefaultTableModel(data, columns));
+    }
+
+    private JPanel createTitledPanel(String title, JTable table) {
+        JScrollPane scrollPane = new JScrollPane(table);
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setBorder(BorderFactory.createTitledBorder(title));
+        panel.add(scrollPane, BorderLayout.CENTER);
+        return panel;
+    }
+    private void loadTopCustomers() {
+        Vector<StatisticalDTO> customers = bll.getTopCus();
+        System.out.println("Số lượng khách hàng nhận được: " + customers.size()); // ✅ debug
+    
+        String[] columns = {"Khách hàng", "Số đơn", "Tổng chi (VNĐ)"};
+        DefaultTableModel model = new DefaultTableModel(columns, 0);
+    
+        for (StatisticalDTO dto : customers) {
+            Object[] row = new Object[]{
+                dto.getFullName(),
+                dto.getOrderCount(),
+                String.format("%,.0f VNĐ", dto.getTotalSpent())
+            };
+            model.addRow(row);
+        }
+    
+        tableTopCustomers.setModel(model);
+    }
+    
+    
+    private void loadMonthlyRevenueData() {
+    Vector<StatisticalDTO> stats = bll.getMonthlyStatistics();
+
+    String[] columns = {"Tháng", "Số đơn hàng", "Sản phẩm bán", "Doanh thu"};
+    DefaultTableModel model = new DefaultTableModel(columns, 0);
+
+    int totalOrders = 0;
+    int totalProducts = 0;
+    double totalRevenue = 0;
+
+    for (StatisticalDTO dto : stats) {
+        Object[] row = new Object[]{
+                "Tháng " + dto.getMonth(),
+                dto.getTotalOrders(),
+                dto.getTotalProductsSold(),
+                String.format("%,.0f VNĐ", dto.getTotalRevenue())
+        };
+        model.addRow(row);
+
+        totalOrders += dto.getTotalOrders();
+        totalProducts += dto.getTotalProductsSold();
+        totalRevenue += dto.getTotalRevenue();
+    }
+
+    tableRevenue.setModel(model);
+
+    // Cập nhật tổng doanh thu
+    totalOrdersLabel.setText("Tổng đơn hàng: " + totalOrders);
+    totalSalesLabel.setText("Tổng sản phẩm bán: " + totalProducts);
+    totalRevenueLabel.setText("Tổng doanh thu: " + String.format("%,.0f VNĐ", totalRevenue));
+    
+}
+private void loadTopProducts() {
+        Vector<StatisticalDTO> products = bll.getToppro();
+    
+        String[] columns = {"Sản phẩm", "Số lượng bán", "Doanh thu (VNĐ)"};
+        DefaultTableModel model = new DefaultTableModel(columns, 0);
+    
+        for (StatisticalDTO dto : products) {
+            Object[] row = new Object[]{
+                    dto.getProductName(),
+                    dto.getQuantitySold(),
+                    String.format("%,.0f VNĐ", dto.getRevenue())
+            };
+            model.addRow(row);
+        }
+    
+        tableTopProducts.setModel(model);
+    }
+    private void loadBrandRevenue() {
+        Vector<StatisticalDTO> brands = bll.getBrandre();
+    
+        String[] columns = {"Hãng sản phẩm", "Doanh thu (VNĐ)"};
+        DefaultTableModel model = new DefaultTableModel(columns, 0);
+    
+        for (StatisticalDTO dto : brands) {
+            Object[] row = new Object[]{
+                    dto.getBrand(),
+                    String.format("%,.0f VNĐ", dto.getRevenue())
+            };
+            model.addRow(row);
+        }
+    
+        tableCategoryRevenue.setModel(model);
+    }
+    
+    
+
+}

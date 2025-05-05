@@ -1,6 +1,8 @@
 package GUI;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+
 import java.awt.*;
 import java.awt.event.*;
 import GUI.StorePanel;
@@ -14,7 +16,7 @@ public class HomeForm extends JFrame {
         setIconImage(favicon.getImage());
         setTitle("Trang chính");
         setSize(1240, 790);
-        setResizable(false);
+        setResizable(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
@@ -59,7 +61,7 @@ public class HomeForm extends JFrame {
         contentPanel.add(new StorePanel(), "store");
         contentPanel.add(new WareHousePanel(), "warehouse");
         contentPanel.add(new JLabel("Giao diện Tài khoản"), "account");
-        contentPanel.add(new JLabel("Giao diện Thống kê"), "stats");
+        contentPanel.add(new statistical(), "stats");
 
         // Sự kiện nút chuyển panel
         storeBtn.addActionListener(e -> switchPanel("store"));
@@ -69,27 +71,6 @@ public class HomeForm extends JFrame {
 
         add(menuPanel, BorderLayout.WEST);
         add(contentPanel, BorderLayout.CENTER);
-
-        JLabel infoLabel = new JLabel("Di chuột để xem tọa độ và kích thước...");
-infoLabel.setPreferredSize(new Dimension(1240, 20));
-infoLabel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-add(infoLabel, BorderLayout.SOUTH);
-
-// Bắt sự kiện rê chuột trên contentPanel
-contentPanel.addMouseMotionListener(new MouseMotionAdapter() {
-    @Override
-    public void mouseMoved(MouseEvent e) {
-        Component source = e.getComponent(); // là contentPanel
-        Point point = e.getPoint(); // vị trí chuột trong contentPanel
-        Rectangle bounds = source.getBounds(); // kích thước contentPanel
-
-        infoLabel.setText(String.format(
-            "Tọa độ chuột: (%d, %d) | contentPanel (x=%d, y=%d, w=%d, h=%d)",
-            point.x, point.y, bounds.x, bounds.y, bounds.width, bounds.height
-        ));
-    }
-});
-
         setVisible(true);
     }
     

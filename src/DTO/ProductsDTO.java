@@ -12,7 +12,6 @@ public class ProductsDTO {
     private BigDecimal prices;
     private String status;
     private Date date;
-    private String images;
 
     public int getProductID() {
         return productID;
@@ -74,11 +73,5 @@ public class ProductsDTO {
     }
     public void setDate(Date date){
         this.date =date;
-    }
-    public String getImages(){
-        return images;
-    }
-    public void setImages(String images){
-        this.images = images;
     }
 }

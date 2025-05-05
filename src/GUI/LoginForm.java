@@ -78,7 +78,7 @@ public class LoginForm extends JFrame {
         rightPanel.add(passwordLabel);
 
         // Login button
-        loginButton = new JButton("Login");
+        loginButton = new Roundbtn("Login");
         loginButton.setBounds(125, 332, 282, 27);
         loginButton.setBackground(new Color(59, 228, 119));
         loginButton.setFont(new Font("Arial", Font.BOLD, 13));
@@ -104,14 +104,13 @@ public class LoginForm extends JFrame {
         registerButton.setContentAreaFilled(false);
         registerButton.setFocusPainted(false);
         rightPanel.add(registerButton);
-
-        // Action listeners
-        loginButton.addActionListener(e -> handleLogin());
-        registerButton.addActionListener(e -> {
-            new RegisterForm();
-            dispose();
+        registerButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                new RegisterForm().setVisible(true);
+            }
         });
-
+       
         setVisible(true);
     }
 
