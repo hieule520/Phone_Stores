@@ -9,8 +9,8 @@ public class ProductsDAL {
     public Vector<ProductsDTO> getAllProducts() {
         Vector<ProductsDTO> list = new Vector<ProductsDTO>();
         Connection con = DBConnection.openConnect();
+         try{
         String sql = "SELECT * FROM products";
-        try{
             Statement stm = con.createStatement();
             ResultSet rs = stm.executeQuery(sql);
             while (rs.next()) {

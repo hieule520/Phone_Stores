@@ -171,7 +171,10 @@ btn.addActionListener(new ActionListener() {
         }
         setPreferredSize(new Dimension(1080, 800));
     }
-
+    public void initComponents() {
+        
+        }
+        
     private void addLabel(String text, int x, int y) {
         JLabel label = new JLabel(text);
         label.setBounds(x, y, 120, 20);
