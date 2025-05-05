@@ -26,6 +26,6 @@ public class Roundbtn extends JButton {
 
     @Override
     protected void paintBorder(Graphics g) {
-        // Không cần border
+
     }
 }

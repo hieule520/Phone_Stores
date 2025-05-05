@@ -16,7 +16,15 @@ public class statistical extends JPanel {
 private StatisticalBLL bll = new StatisticalBLL();
 
     public statistical() {
-        
+        initComponents();
+        loadMonthlyRevenueData();
+        loadTopCustomers();
+        loadTopProducts();
+        loadBrandRevenue();
+        loadRevenueGrowthRate();
+        loadTopEmployees();
+    }
+    public void initComponents() {
         setBackground(new Color(31, 31, 31));
         setLayout(new BorderLayout());
 
@@ -119,13 +127,9 @@ private StatisticalBLL bll = new StatisticalBLL();
         summaryPanel.add(totalRevenueLabel);
 
         add(summaryPanel, BorderLayout.SOUTH);
-        loadMonthlyRevenueData();
-        loadTopCustomers();
-        loadTopProducts();
-        loadBrandRevenue();
-        loadRevenueGrowthRate();
-        loadTopEmployees();
-    }
+   
+        }
+        
 
     private JTable createTable(String[] columns, Object[][] data) {
         DefaultTableModel model = new DefaultTableModel(data, columns) {

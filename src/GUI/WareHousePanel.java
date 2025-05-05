@@ -21,6 +21,9 @@ public class WareHousePanel extends JPanel {
     Vector<ProductsDTO> productList = productsBLL.getAllProducts();
 
     public WareHousePanel() {
+        initComponents();
+    }
+    public void initComponents() {
         setLayout(null);
         setBackground(new Color(18, 18, 18)); 
 
@@ -99,14 +102,22 @@ table.addMouseListener(new MouseAdapter() {
     public void mouseClicked(MouseEvent e) {
         int selectedRow = table.getSelectedRow();
         if (selectedRow >= 0) {
-            tfProductID.setText(table.getValueAt(selectedRow, 0).toString());
-            tfProductName.setText(table.getValueAt(selectedRow, 1).toString());
-            cbType.setSelectedItem(table.getValueAt(selectedRow, 2).toString());
-            cbBrand.setSelectedItem(table.getValueAt(selectedRow, 3).toString());
-            tfStock.setText(table.getValueAt(selectedRow, 4).toString());
-            tfPrice.setText(table.getValueAt(selectedRow, 5).toString());
-            cbStatus.setSelectedItem(table.getValueAt(selectedRow, 6).toString()); 
-            selectedImagePath = table.getValueAt(selectedRow, 8).toString(); 
+            Object value = table.getValueAt(selectedRow, 0);
+            tfProductID.setText(value != null ? value.toString() : "");
+            Object value1 = table.getValueAt(selectedRow, 1);
+            tfProductName.setText(value1 != null ? value1.toString() : "");
+            Object value2 = table.getValueAt(selectedRow, 2);
+            cbType.setSelectedItem(value2 != null ? value2.toString() : null);
+            Object value3 = table.getValueAt(selectedRow, 3);
+            cbBrand.setSelectedItem(value3 != null ? value3.toString() : null);
+            Object value4 = table.getValueAt(selectedRow, 4);
+            tfStock.setText(value4 != null ? value4.toString() : "");
+            Object value5 = table.getValueAt(selectedRow, 5);
+            tfPrice.setText(value5 != null ? value5.toString() : "");
+            Object value6 = table.getValueAt(selectedRow, 6);
+            cbStatus.setSelectedItem(value6 != null ? value6.toString() : null);
+            Object imgPath = table.getValueAt(selectedRow, 8);
+            selectedImagePath = imgPath != null ? imgPath.toString() : "";
             if (!selectedImagePath.isEmpty()) {
                 ImageIcon icon = new ImageIcon(selectedImagePath);
                 Image scaledImage = icon.getImage().getScaledInstance(158, 212, Image.SCALE_SMOOTH);
@@ -170,9 +181,6 @@ btn.addActionListener(new ActionListener() {
 
         }
         setPreferredSize(new Dimension(1080, 800));
-    }
-    public void initComponents() {
-        
         }
         
     private void addLabel(String text, int x, int y) {
