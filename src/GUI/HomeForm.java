@@ -56,14 +56,29 @@ public class HomeForm extends JFrame {
         storeBtn.setBackground(new Color(176, 253, 224));
         storeBtn.setForeground(new Color(51, 56, 54));
         JButton employeeBtn = new JButton("Nhân Viên");
-        employeeBtn.setBounds(1, 300, 120, 50);
+        ImageIcon employeeIcon = new ImageIcon("img/other/employees.png");
+        Image employeeIcon1 = employeeIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+        ImageIcon employeeIcon2 = new ImageIcon(employeeIcon1);
+        employeeBtn.setIcon(employeeIcon2);
+        employeeBtn.setIconTextGap(10);
+        employeeBtn.setBounds(1, 330, 148, 50);
+        employeeBtn.setFocusable(false);
+        employeeBtn.setBorder(border);
+        employeeBtn.setFont(new Font("Arial", Font.BOLD, 13));
+        employeeBtn.setBackground(new Color(176, 253, 224));
+        employeeBtn.setForeground(new Color(51, 56, 54));
         JButton customerBtn = new JButton("Khách hàng");
-        customerBtn.setBounds(1, 500, 120, 50);
-
-
-
-
-
+        ImageIcon customerIcon = new ImageIcon("img/other/rating.png");
+        Image customerIcon1 = customerIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+        ImageIcon customerIcon2 = new ImageIcon(customerIcon1);
+        customerBtn.setIcon(customerIcon2);
+        customerBtn.setIconTextGap(10);
+        customerBtn.setBounds(1, 430, 148, 50);
+        customerBtn.setFocusable(false);
+        customerBtn.setBorder(border);
+        customerBtn.setFont(new Font("Arial", Font.BOLD, 13));
+        customerBtn.setBackground(new Color(176, 253, 224));
+        customerBtn.setForeground(new Color(51, 56, 54));
         JButton warehouseBtn = new JButton("Kho");
         ImageIcon warehouseIcon = new ImageIcon("img/other/warehouse.png");
         Image warehouseIcon1 = warehouseIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
@@ -76,25 +91,14 @@ public class HomeForm extends JFrame {
         warehouseBtn.setFont(new Font("Arial", Font.BOLD, 13));
         warehouseBtn.setBackground(new Color(176, 253, 224));
         warehouseBtn.setForeground(new Color(51, 56, 54));
-        JButton accountBtn = new JButton("Tài khoản");
-        ImageIcon accountIcon = new ImageIcon("img/other/accounting.png");
-        Image accountIcon1 = accountIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
-        ImageIcon accountIcon2 = new ImageIcon(accountIcon1);
-        accountBtn.setIcon(accountIcon2);
-        accountBtn.setIconTextGap(10);
-        accountBtn.setBounds(1, 330, 148, 50);
-        accountBtn.setFocusable(false);
-        accountBtn.setBorder(border);
-        accountBtn.setFont(new Font("Arial", Font.BOLD, 13));
-        accountBtn.setBackground(new Color(176, 253, 224));
-        accountBtn.setForeground(new Color(51, 56, 54));
+    
         JButton statsBtn = new JButton("Thống kê");
         ImageIcon statsIcon = new ImageIcon("img/other/description.png");
         Image statsIcon1 = statsIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
         ImageIcon statsIcon2 = new ImageIcon(statsIcon1);
         statsBtn.setIcon(statsIcon2);
         statsBtn.setIconTextGap(10);
-        statsBtn.setBounds(1, 430, 148, 50);
+        statsBtn.setBounds(1, 530, 148, 50);
         statsBtn.setFocusable(false);
         statsBtn.setBorder(border);
         statsBtn.setFont(new Font("Arial", Font.BOLD, 13));
@@ -123,9 +127,10 @@ public class HomeForm extends JFrame {
             }
         });
         menuPanel.add(exitBtn);
+        menuPanel.add(employeeBtn);
+        menuPanel.add(customerBtn);
         menuPanel.add(storeBtn);
         menuPanel.add(warehouseBtn);
-        menuPanel.add(accountBtn);
         menuPanel.add(statsBtn);
 
         // Panel nội dung trung tâm với CardLayout

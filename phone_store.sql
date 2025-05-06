@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 06, 2025 at 03:09 AM
+-- Generation Time: May 06, 2025 at 03:48 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.1.25
 
@@ -64,7 +64,8 @@ CREATE TABLE `employees` (
 --
 
 INSERT INTO `employees` (`EmployeeID`, `Username`, `Password`, `Phone`, `Email`, `JoinDate`, `Address`) VALUES
-(9, 'a', '123123123', '0878985119', 'hiu@gmail.com', '2025-05-05', '36');
+(9, 'a', '123123123', '0878985119', 'hiu@gmail.com', '2025-05-05', '36'),
+(13, 'h', '123123123', '1231231231', NULL, '2025-05-06', NULL);
 
 -- --------------------------------------------------------
 
@@ -130,7 +131,8 @@ CREATE TABLE `salesinvoicedetails` (
   `InvoiceID` int(11) DEFAULT NULL,
   `ProductID` int(11) DEFAULT NULL,
   `Quantity` int(11) NOT NULL,
-  `UnitPrice` decimal(15,2) NOT NULL
+  `Prices` decimal(15,2) NOT NULL,
+  `TotalPrices` decimal(15,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -143,7 +145,8 @@ CREATE TABLE `salesinvoices` (
   `InvoiceID` int(11) NOT NULL,
   `CustomerID` int(11) DEFAULT NULL,
   `EmployeeID` int(11) DEFAULT NULL,
-  `SaleDate` datetime DEFAULT current_timestamp()
+  `SaleDate` datetime DEFAULT current_timestamp(),
+  `TotalAmount` decimal(15,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -233,7 +236,7 @@ ALTER TABLE `customers`
 -- AUTO_INCREMENT for table `employees`
 --
 ALTER TABLE `employees`
-  MODIFY `EmployeeID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `EmployeeID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `products`
