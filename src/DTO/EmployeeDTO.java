@@ -1,14 +1,16 @@
 package DTO;
 
+import java.sql.Date;
+
 public class EmployeeDTO {
     private int employeeID;
     private String username;
     private String password;
-    private String fullName;
     private String phone;
-    private String role;
+    private String email;
+    private Date joinDate;
+    private String address;
 
-    // Getters and Setters
     public int getEmployeeID() { 
         return employeeID; 
     }
@@ -27,16 +29,9 @@ public class EmployeeDTO {
     public String getPassword() {
          return password; 
     }
+
     public void setPassword(String password) {
          this.password = password; 
-    }
-
-    public String getFullName() {
-         return fullName; 
-    }
-
-    public void setFullName(String fullName) {
-         this.fullName = fullName; 
     }
 
     public String getPhone() {
@@ -47,11 +42,29 @@ public class EmployeeDTO {
         this.phone = phone; 
     }
 
-    public String getRole() { 
-        return role; 
+    public String getEmail(){
+        return email;
     }
 
-    public void setRole(String role) {
-         this.role = role; 
+    public void setEmail(String email){
+        this.email = email;
+    }
+
+    public Date getJoinDate(){
+        return joinDate;
+    }
+
+    public void setJoinDate(Date joiDate){
+        this.joinDate = joiDate;
+    }
+
+    public String getAddress(){
+        return address;
+    }
+
+    public void setAddress(String address){
+        this.address = address;
     }
 } 
+
+
