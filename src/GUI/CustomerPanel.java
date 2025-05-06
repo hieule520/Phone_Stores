@@ -216,6 +216,3 @@ public class CustomerPanel extends JPanel {
         genderCb.setSelectedIndex(0);
     }
 }
-
-
-
