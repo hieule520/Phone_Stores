@@ -2,7 +2,7 @@ package GUI;
 
 import javax.swing.*;
 import javax.swing.border.Border;
-
+import DTO.EmployeeDTO;
 import java.awt.*;
 import java.awt.event.*;
 import GUI.StorePanel;
@@ -10,9 +10,14 @@ import GUI.WareHousePanel;
 
 public class HomeForm extends JFrame {
     private JPanel contentPanel;  
+    private EmployeeDTO currEmployee;
 
 
-    public HomeForm() {
+    public HomeForm(EmployeeDTO emp) {
+        this.currEmployee=emp;
+        initComponents();
+    }
+    private void initComponents(){
         Border border = BorderFactory.createLineBorder(new Color(176, 253, 224),5);
         ImageIcon favicon = new ImageIcon("img/other/newera-logo.png");
         setIconImage(favicon.getImage());
@@ -50,6 +55,15 @@ public class HomeForm extends JFrame {
         storeBtn.setFont(new Font("Arial", Font.BOLD, 13));
         storeBtn.setBackground(new Color(176, 253, 224));
         storeBtn.setForeground(new Color(51, 56, 54));
+        JButton employeeBtn = new JButton("Nhân Viên");
+        employeeBtn.setBounds(1, 300, 120, 50);
+        JButton customerBtn = new JButton("Khách hàng");
+        customerBtn.setBounds(1, 500, 120, 50);
+
+
+
+
+
         JButton warehouseBtn = new JButton("Kho");
         ImageIcon warehouseIcon = new ImageIcon("img/other/warehouse.png");
         Image warehouseIcon1 = warehouseIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
@@ -116,16 +130,18 @@ public class HomeForm extends JFrame {
 
         // Panel nội dung trung tâm với CardLayout
         contentPanel = new JPanel(new CardLayout());
-        contentPanel.add(new StorePanel(), "store");
+        contentPanel.add(new StorePanel(currEmployee), "store");
         contentPanel.add(new WareHousePanel(), "warehouse");
-        contentPanel.add(new JLabel("Giao diện Tài khoản"), "account");
+        contentPanel.add(new EmployeePanel(), "employee");
+        contentPanel.add(new CustomerPanel(), "customer");
         contentPanel.add(new statistical(), "stats");
 
         // Sự kiện nút chuyển panel
         storeBtn.addActionListener(e -> switchPanel("store"));
         warehouseBtn.addActionListener(e -> switchPanel("warehouse"));
-        accountBtn.addActionListener(e -> switchPanel("account"));
+        employeeBtn.addActionListener(e -> switchPanel("employee"));
         statsBtn.addActionListener(e -> switchPanel("stats"));
+        customerBtn.addActionListener(e -> switchPanel("customer"));
 
         add(menuPanel, BorderLayout.WEST);
         add(contentPanel, BorderLayout.CENTER);

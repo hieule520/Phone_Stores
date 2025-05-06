@@ -14,6 +14,9 @@ public class LoginForm extends JFrame {
     EmployeeBLL empl = new EmployeeBLL();
 
     public LoginForm() {
+        initComponents();
+    }
+    private void initComponents(){
         setTitle("Đăng nhập - NewEra");
         setSize(1043, 550);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -117,18 +120,23 @@ public class LoginForm extends JFrame {
     
     private void loginAction(ActionEvent e){
         try{
-            if(usernameField.getText().trim().equals("")||passwordField.getPassword().toString().trim().equals("")){
+            String username = usernameField.getText().trim();
+            String password = new String(passwordField.getPassword()).trim();
+    
+            if(username.equals("") || password.equals("")){
                 JOptionPane.showMessageDialog(this, "Vui lòng điền đầy đủ thông tin");
-            }else{                
-                String result = empl.login(usernameField.getText(), new String(passwordField.getPassword()));
-                JOptionPane.showMessageDialog(this, result);
-                if(result.equals("Đăng nhập thành công!")){
+            } else {
+                EmployeeDTO emp = empl.getEmployeeAfterLogin(username, password);
+                if(emp != null){
+                    JOptionPane.showMessageDialog(this, "Đăng nhập thành công!\nChào nhân viên: " + emp.getUsername());
                     dispose();
-                    new HomeForm().setVisible(true);
+                    new HomeForm(emp).setVisible(true); 
+                } else {
+                    JOptionPane.showMessageDialog(this, "Sai tên tài khoản hoặc mật khẩu");
                 }
             }
-        }catch(NumberFormatException ex){
-            System.out.println("Thông tin không hợp lệ: "+ex.getMessage());
+        } catch(Exception ex){
+            System.out.println("Lỗi khi đăng nhập: " + ex.getMessage());
         }
 
     }

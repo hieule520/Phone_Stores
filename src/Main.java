@@ -1,8 +1,9 @@
 import GUI.LoginForm;
 import GUI.HomeForm;
+import GUI.WareHousePanel;
 
 public class Main {
     public static void main(String[] args) {
-        new HomeForm().setVisible(true);
+        new LoginForm.setVisible(true);
     }
 }
