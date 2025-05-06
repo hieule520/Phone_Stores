@@ -34,15 +34,15 @@ public class ProductsBLL {
         return success ? "Thêm sản phẩm thành công!" : "Thêm sản phẩm thất bại!";
     }
     public ProductsDTO getProductsByName(String name){
-        return productDAL.getProductsByName(name);
+        return dal.getProductsByName(name);
     }
 
     public void updateStockAfterSale(int productID, int quantitySold) {
-        ProductsDTO product = productDAL.getProductByID(productID);
+        ProductsDTO product = dal.getProductByID(productID);
         if (product != null) {
             int newStock = product.getStock() - quantitySold;
             if (newStock < 0) newStock = 0;
-            productDAL.updateStock(productID, newStock);
+            dal.updateStock(productID, newStock);
         }
     }
     
