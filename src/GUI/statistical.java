@@ -237,6 +237,7 @@ private void loadTopProducts() {
     
         tableTopProducts.setModel(model);
     }
+    
     private void loadBrandRevenue() {
         Vector<StatisticalDTO> brands = bll.getBrandre();
     

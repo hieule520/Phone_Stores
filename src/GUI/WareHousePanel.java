@@ -5,6 +5,7 @@ import java.awt.event.*;
 import java.math.BigDecimal;
 import java.util.Vector;
 import javax.swing.*;
+import java.util.Date;
 import javax.swing.table.DefaultTableModel;
 import BLL.ProductsBLL;
 import DTO.ProductsDTO;
@@ -22,6 +23,7 @@ public class WareHousePanel extends JPanel {
 
     public WareHousePanel() {
         initComponents();
+        
     }
     public void initComponents() {
         setLayout(null);
@@ -46,7 +48,8 @@ for (ProductsDTO product : productList) {
     row[3] = product.getBrand();
     row[4] = product.getStock();
     row[5] = product.getPrices();
-    row[6] = product.getStatus();
+    String autoStatus = product.getStock() == 0 ? "Hết Hàng" : "Còn Hàng";
+    row[6] = autoStatus;
     row[7] = product.getDate();
     row[8] = product.getImages(); 
     model.addRow(row); 

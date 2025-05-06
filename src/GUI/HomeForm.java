@@ -2,15 +2,25 @@ package GUI;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.table.DefaultTableModel;
+
 import DTO.EmployeeDTO;
+import DTO.ProductsDTO;
+import BLL.ProductsBLL;
 import java.awt.*;
 import java.awt.event.*;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.Vector;
+
 import GUI.StorePanel;
 import GUI.WareHousePanel;
 
 public class HomeForm extends JFrame {
     private JPanel contentPanel;  
     private EmployeeDTO currEmployee;
+    ProductsBLL productsBLL = new ProductsBLL();
+    Vector<ProductsDTO> productList = productsBLL.getAllProducts();
 
 
     public HomeForm(EmployeeDTO emp) {
@@ -136,7 +146,9 @@ public class HomeForm extends JFrame {
         // Panel nội dung trung tâm với CardLayout
         contentPanel = new JPanel(new CardLayout());
         contentPanel.add(new StorePanel(currEmployee), "store");
-        contentPanel.add(new WareHousePanel(), "warehouse");
+
+        WareHousePanel warehousePanel = new WareHousePanel(); 
+        contentPanel.add(warehousePanel, "warehouse");
         contentPanel.add(new EmployeePanel(), "employee");
         contentPanel.add(new CustomerPanel(), "customer");
         contentPanel.add(new statistical(), "stats");
@@ -151,6 +163,7 @@ public class HomeForm extends JFrame {
         add(menuPanel, BorderLayout.WEST);
         add(contentPanel, BorderLayout.CENTER);
         setVisible(true);
+        
     }
     
 
@@ -158,4 +171,37 @@ public class HomeForm extends JFrame {
         CardLayout cl = (CardLayout) (contentPanel.getLayout());
         cl.show(contentPanel, name);
     }
+    public void loadProductList(){
+        //Tạo modelSP cho table chứa sản phẩm
+        
+        DefaultTableModel model = new DefaultTableModel();
+        JTable table = new JTable(model);
+        model.addColumn("ProductID");
+        model.addColumn("ProductName");
+        model.addColumn("Type");
+        model.addColumn("Brand");
+        model.addColumn("Stock");
+        model.addColumn("Prices");
+        model.addColumn("Status");
+        model.addColumn("Date");
+        model.addColumn("Images");
+        table.setModel(model);
+
+        Vector<ProductsDTO> arr = new Vector<ProductsDTO>();
+        arr = productsBLL.getAllProducts();
+        for(int i=0;i<arr.size();i++){
+            ProductsDTO p = arr.get(i);
+            int ma = p.getProductID();
+            String ten = p.getProductName();
+            String loai = p.getType();
+            String hang = p.getBrand();
+            int soLuong = p.getStock();
+            BigDecimal gia = p.getPrices();
+            String trangthai = p.getStatus();
+            String anh = p.getImages();
+            Date time = p.getDate();
+            Object[] row = {ma, ten, loai, hang, soLuong, gia, trangthai, time, anh};
+            model.addRow(row);
+       }
+   }
 }
