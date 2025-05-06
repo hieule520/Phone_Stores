@@ -171,37 +171,5 @@ public class HomeForm extends JFrame {
         CardLayout cl = (CardLayout) (contentPanel.getLayout());
         cl.show(contentPanel, name);
     }
-    public void loadProductList(){
-        //Tạo modelSP cho table chứa sản phẩm
-        
-        DefaultTableModel model = new DefaultTableModel();
-        JTable table = new JTable(model);
-        model.addColumn("ProductID");
-        model.addColumn("ProductName");
-        model.addColumn("Type");
-        model.addColumn("Brand");
-        model.addColumn("Stock");
-        model.addColumn("Prices");
-        model.addColumn("Status");
-        model.addColumn("Date");
-        model.addColumn("Images");
-        table.setModel(model);
-
-        Vector<ProductsDTO> arr = new Vector<ProductsDTO>();
-        arr = productsBLL.getAllProducts();
-        for(int i=0;i<arr.size();i++){
-            ProductsDTO p = arr.get(i);
-            int ma = p.getProductID();
-            String ten = p.getProductName();
-            String loai = p.getType();
-            String hang = p.getBrand();
-            int soLuong = p.getStock();
-            BigDecimal gia = p.getPrices();
-            String trangthai = p.getStatus();
-            String anh = p.getImages();
-            Date time = p.getDate();
-            Object[] row = {ma, ten, loai, hang, soLuong, gia, trangthai, time, anh};
-            model.addRow(row);
-       }
-   }
+    
 }
