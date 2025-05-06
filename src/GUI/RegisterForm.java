@@ -14,6 +14,9 @@ public class RegisterForm extends JFrame {
     private JButton registerButton;
 
     public RegisterForm() {
+        initComponents();
+    }
+    private void initComponents(){
         ImageIcon favicon = new ImageIcon("img/other/newera-logo.png");
         setIconImage(favicon.getImage());
         setTitle("Sign up to start shopping");

@@ -16,9 +16,7 @@ public class test {
 {ex.printStackTrace();}
     
 }
-public Vector<StatisticalDTO> getTopem(){
-    Vector<StatiscalDTO> arr = new Vector<StatisticalDTO>();
-    Connection con = DBConnection.openConnect();
+
 
 }
 }
